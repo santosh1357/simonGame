@@ -1,7 +1,6 @@
 var simonGame = {
 	COUNT: 0,
 	PATTERN: [],
-	userPattern:[],
 	SOUND:[{file:'sounds/sa.mp3'},{file:'sounds/re.mp3'},{file:'sounds/ga.mp3'},{file:'sounds/ma.mp3'},{file:'sounds/pa.mp3'},{file:'sounds/dha.mp3'},{file:'sounds/nee.mp3'}],
 	patternGen: function(){
 		var randomId;
@@ -71,14 +70,14 @@ var handler = {
 		document.getElementById("count").innerHTML = "Count: " + simonGame.COUNT;
 	}, //close countIncrease
 	userInput: function(){
-		var userPattern = [];var id;
+		var userPattern = new Array();var id;
 		 $('img').click(function(){
 				//console.log("Image Clicked by User " + this.id + simonGame.PATTERN);userPattern.push(this.id);
 				//console.log("userPattern.indexOf(this.id) !== simonGame.PATEERN(this.id) " + userPattern.indexOf(this.id) !== simonGame.PATTERN.indexOf(this.id));						
 				id = parseInt(this.id,10);console.log(" push ");
-				simonGame.userPattern.push(id);
+				userPattern.push(id);
 				handler.effect(id);
-				console.log(" user " + simonGame.userPattern); 
+				console.log(" user " + userPattern); 
 				console.log(" pattern " + simonGame.PATTERN);
 				if(userPattern.indexOf(id) !== simonGame.PATTERN.indexOf(id)){
 					console.log(" WRONG USER INPUT ");
@@ -98,7 +97,7 @@ var handler = {
 					}
 				}
 				
-				if(simonGame.userPattern.length === simonGame.PATTERN.length){
+				if(userPattern.length === simonGame.PATTERN.length){
 					userPattern.length = 0;
 				}
 		});		
