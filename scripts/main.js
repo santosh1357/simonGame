@@ -24,18 +24,13 @@ var simonGame = {
 			//console.log("PATEERN: " + simonGame.PATTERN + "COUNT " + simonGame.COUNT );
 			//calling user input
 			console.log("calling user Input");
-			var result = handler.userInput();console.log("result " + result.userInput);
-			if (result.userInput == "wrong") {
-				handler.patternRepeatPlayer();
-			} else if (result.userInput == "success"){
-				setTimeout(function(){
+			handler.userInput();
+			setTimeout(function(){
 				if(handler.repeatFlag === false){  //execute count gen only if repeat flag is false inside user INPUT
 					genPattern();
 				}
 			},simonGame.COUNT*2000);
-			} else if(result.userInput == "empty"){
-				console.log(" No Response from User ");
-			}
+		 
 			//console.log("pattern check true, calling pattern gen");
 			
 		//},simonGame.COUNT*5000); //close setTimeout
@@ -48,7 +43,7 @@ var simonGame = {
 
 var handler = {
 	countRepPlayer: 0,
-	userPattern: [],
+	repeatFlag: false,
 	patternRepeatPlayer: function(){
 		var repeater = setInterval(function(){
 				handler.effect(simonGame.PATTERN[handler.countRepPlayer]);
@@ -74,18 +69,14 @@ var handler = {
 	countDisplay: function(){
 		document.getElementById("count").innerHTML = "Count: " + simonGame.COUNT;
 	}, //close countIncrease
-	getUserInput: function(){
-		//var userPattern = new Array();
+	userInput: function(){
+		var userPattern = new Array();var id;
 		 $('img').click(function(){
 				//console.log("Image Clicked by User " + this.id + simonGame.PATTERN);userPattern.push(this.id);
-				//console.log("userPattern.indexOf(this.id) !== simonGame.PATEERN(this.id) " + userPattern.indexOf(this.id) !== simonGame.PATTERN.indexOf(this.id));			
-				
-				var id = parseInt(this.id,10);
-				handler.userPattern.push(id);
+				//console.log("userPattern.indexOf(this.id) !== simonGame.PATEERN(this.id) " + userPattern.indexOf(this.id) !== simonGame.PATTERN.indexOf(this.id));						
+				id = parseInt(this.id,10);console.log(" push ");
+				userPattern.push(id);
 				handler.effect(id);
-				});
-	}
-	checkUserInput: function(){
 				console.log(" user " + userPattern); 
 				console.log(" pattern " + simonGame.PATTERN);
 				if(userPattern.indexOf(id) !== simonGame.PATTERN.indexOf(id)){
@@ -99,18 +90,17 @@ var handler = {
 						var audio = new Audio('sounds/wrong.mp3');
 						audio.play();
 						userPattern.length = 0;
-						return {userInput:"wrong"};
+						handler.repeatFlag = true;
+						handler.patternRepeatPlayer();
+						return ;
 						
 					}
 				}
-				if(userPattern.length === 0){
-					return {userInput: "empty"};
-				}
+				
 				if(userPattern.length === simonGame.PATTERN.length){
 					userPattern.length = 0;
-					return {userInput: "success"};
 				}
-				
+		});		
 				//console.log(" Index Of this.id inside userPattern " + userPattern.indexOf(this.id));
 				//console.log(" Index Of this.id inside PATTERN " + simonGame.PATTERN.indexOf(this.id));	
 			
