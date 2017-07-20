@@ -20,25 +20,17 @@ var simonGame = {
 	patternMatcher: function(genPattern){
 		//console.log("inside patternMatch");
 		var genPattern = simonGame.patternGen;
-		//setTimeout(function(){
-			//console.log("PATEERN: " + simonGame.PATTERN + "COUNT " + simonGame.COUNT );
 			//calling user input
 			console.log("calling user Input");
 			handler.userInput();
 			setTimeout(function(){
 				if(handler.repeatFlag === false){  //execute count gen only if repeat flag is false inside user INPUT
+					console.log("calling pattern Gen");
 					genPattern();
 				}
 			},simonGame.COUNT*2000);
-		 
-			//console.log("pattern check true, calling pattern gen");
-			
-		//},simonGame.COUNT*5000); //close setTimeout
-		
 	}, //close patternMatcher
-	
-	
-	
+
 } //close simonGame
 
 var handler = {
@@ -48,15 +40,12 @@ var handler = {
 		var repeater = setInterval(function(){
 				handler.effect(simonGame.PATTERN[handler.countRepPlayer]);
 				handler.countRepPlayer += 1;
-				if(handler.countRepPlayer > simonGame.COUNT){
+				if(handler.countRepPlayer > simonGame.COUNT){ //If all ids inside pattern has been played, clearInterval, reset repeat count and call patternMatch.
 					clearInterval(repeater);
-					//setTimeout(function(){
+						handler.countRepPlayer = 0;
 						simonGame.patternMatcher();
-						//},1000);
-					handler.countRepPlayer = 0;
 				}
 			},1000);//close sestInterval
-		
 	}, //close patternRepeatPlayer
 	effect: function(id){
 	   var img = document.getElementById(id);
@@ -73,7 +62,7 @@ var handler = {
 	}, //close countIncrease
 	userInput: function(){
 		var userPattern = new Array();var id;
-		 $('img').click(function(){						
+		 $('img').click(function(e){						
 				id = parseInt(this.id,10);
 				userPattern.push(id);
 				handler.effect(id);
@@ -87,11 +76,12 @@ var handler = {
 						setTimeout(function(){window.location.reload(true)},1000);
 					} else {
 						console.log("inside else " );
+						debugger;
 						var audio = new Audio('sounds/wrong.mp3');
 						audio.play();
 						userPattern.length = 0;
 						handler.repeatFlag = true;
-						handler.patternRepeatPlayer();
+						handler.patternRepeatPlayer(); //this is getting called recursivelly rather	 
 						return ;
 					}
 				}
@@ -99,6 +89,8 @@ var handler = {
 				if(userPattern.length === simonGame.PATTERN.length){
 					userPattern.length = 0;
 				}
+				e.stopImmediatePropagation(); 
+				e.preventDefault();
 		});		//close click.
 					
 	}
