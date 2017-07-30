@@ -3,6 +3,10 @@
  * http://stackoverflow.com/q/12813573/1397351
  */
 
+body{
+	background:#ecf0f1;
+	font-family: 'Lora', serif;
+}
 
 
 .circle-container {
